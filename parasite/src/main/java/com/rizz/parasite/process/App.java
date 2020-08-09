@@ -1,4 +1,4 @@
-package com.rizz.parasite;
+package com.rizz.parasite.process;
 
 public class App {
     private final String processId;

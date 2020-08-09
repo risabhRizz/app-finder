@@ -1,4 +1,8 @@
-package com.rizz.parasite;
+package com.rizz.parasite.process;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,14 +10,14 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("All process: " + findAllProcesses());
+public class ProcessGatherer {
 
-    }
+    public static final Logger logger = LogManager.getLogger(ProcessGatherer.class);
 
-    public static List<App> findAllProcesses() {
+    public List<App> findAllProcesses() {
         String command = "ps -eo pid,comm,cmd";
+
+        logger.info("Executing linux command to get all running processes: [" + command + "]");
 
         List<App> appList = new ArrayList<>();
 
@@ -35,13 +39,13 @@ public class Main {
             p.waitFor();
             p.destroy();
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
 
         return appList;
     }
 
-    private static App createApp(String s) {
+    private App createApp(String s) {
         String[] appParts = s.split("\\s+");
         if (appParts.length < 3) {
             return null;
