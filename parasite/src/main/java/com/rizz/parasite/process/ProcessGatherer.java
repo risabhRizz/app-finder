@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class ProcessGatherer {
 
-    public static final Logger logger = LogManager.getLogger(ProcessGatherer.class);
+    private static final Logger logger = LogManager.getLogger(ProcessGatherer.class);
 
     public Map<String, String> findAllProcesses() {
         String command = "ps -eo pid,comm,cmd";
