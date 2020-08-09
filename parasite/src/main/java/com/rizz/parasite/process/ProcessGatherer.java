@@ -7,19 +7,20 @@ import org.apache.logging.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProcessGatherer {
 
     public static final Logger logger = LogManager.getLogger(ProcessGatherer.class);
 
-    public List<App> findAllProcesses() {
+    public Map<String, String> findAllProcesses() {
         String command = "ps -eo pid,comm,cmd";
 
         logger.info("Executing linux command to get all running processes: [" + command + "]");
 
-        List<App> appList = new ArrayList<>();
+        Map<String, String> processMap = new HashMap<>();
 
         String s;
         Process p;
@@ -30,10 +31,7 @@ public class ProcessGatherer {
             while ((s = br.readLine()) != null) {
                 s = s.trim();
                 if (!s.isEmpty() && !s.endsWith("]")) {
-                    App app = createApp(s);
-                    if (app != null) {
-                        appList.add(app);
-                    }
+                    addProcessToMap(s, processMap);
                 }
             }
             p.waitFor();
@@ -42,22 +40,20 @@ public class ProcessGatherer {
             logger.error(ExceptionUtils.getStackTrace(e));
         }
 
-        return appList;
+        return processMap;
     }
 
-    private App createApp(String s) {
+    private void addProcessToMap(String s, Map<String, String> processMap) {
         String[] appParts = s.split("\\s+");
-        if (appParts.length < 3) {
-            return null;
-        }
+        try {
+            String pid = appParts[0].trim();
+            String command = appParts[1].trim();
+            String absolutePath = appParts[2].trim();
 
-        String pid = appParts[0];
-        String command = appParts[1];
-        String appPath = appParts[2];
-
-        if (pid.length() == 0 || command.length() == 0 || appPath.length() == 0) {
-            return null;
+            processMap.put(command, pid + " " + command + " " + absolutePath);
+        } catch (Exception e) {
+            logger.error("Exception occurred while splitting App parts: " + Arrays.toString(appParts));
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
-        return new App(pid, command, appPath);
     }
 }
