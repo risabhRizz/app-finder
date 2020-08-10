@@ -1,5 +1,6 @@
 package com.rizz.parasite.redis;
 
+import com.rizz.parasite.startup.ParasiteConfig;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,9 +17,9 @@ public class RedisConnection {
         logger.info("Creating connection with Redis server");
         try {
             if (redis == null) {
-                redis = new Jedis("localhost");
+                redis = new Jedis(ParasiteConfig.getConfig().getServerIp());
             }
-            logger.info("Checking Redis connection by getting random key: " + redis.randomKey());
+            redis.randomKey();
         } catch (Exception e) {
             logger.error("Error occurred while creating Redis connection.\n"
                     + ExceptionUtils.getStackTrace(e));

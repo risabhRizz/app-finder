@@ -1,6 +1,7 @@
 package com.rizz.parasite.redis;
 
 import com.rizz.parasite.process.ProcessGatherer;
+import com.rizz.parasite.startup.ParasiteConfig;
 import com.rizz.parasite.util.ParasiteUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +24,7 @@ public class DataPusherTask extends TimerTask {
 
     @Override
     public void run() {
-        String hostKey = ParasiteUtility.getHostName();
+        String hostKey = ParasiteConfig.getConfig().getServerIp();
         Map<String, String> processMap = gatherer.findAllProcesses();
         logger.info("Pushing process-wise data into redis-server: Key: " + hostKey
                 + ", Size: " + processMap.size());
