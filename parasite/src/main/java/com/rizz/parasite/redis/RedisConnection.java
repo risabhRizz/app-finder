@@ -13,11 +13,12 @@ public class RedisConnection {
     }
 
     public static boolean createRedisConnection() {
+        logger.info("Creating connection with Redis server");
         try {
             if (redis == null) {
                 redis = new Jedis("localhost");
             }
-            redis.randomKey();
+            logger.info("Checking Redis connection by getting random key: " + redis.randomKey());
         } catch (Exception e) {
             logger.error("Error occurred while creating Redis connection.\n"
                     + ExceptionUtils.getStackTrace(e));

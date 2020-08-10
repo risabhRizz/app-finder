@@ -7,21 +7,22 @@ import org.apache.logging.log4j.Logger;
 import redis.clients.jedis.Jedis;
 
 import java.util.Map;
+import java.util.TimerTask;
 
-public class DataPusher {
-    private static final Logger logger = LogManager.getLogger(DataPusher.class);
+public class DataPusherTask extends TimerTask {
+    private static final Logger logger = LogManager.getLogger(DataPusherTask.class);
 
     private final ProcessGatherer gatherer;
     private final Jedis redis;
 
 
-    public DataPusher() {
+    public DataPusherTask() {
         this.gatherer = new ProcessGatherer();
         this.redis = RedisConnection.getRedis();
     }
 
-
-    public void pushDataToRedis() {
+    @Override
+    public void run() {
         String hostKey = ParasiteUtility.getHostName();
         Map<String, String> processMap = gatherer.findAllProcesses();
         logger.info("Pushing process-wise data into redis-server: Key: " + hostKey
