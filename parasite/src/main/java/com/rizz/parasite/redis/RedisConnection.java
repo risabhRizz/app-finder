@@ -8,6 +8,7 @@ import redis.clients.jedis.Jedis;
 
 public class RedisConnection {
     private static final Logger logger = LogManager.getLogger(RedisConnection.class);
+    private static final String PARASITE_SERVER_KEYS = "parasite-server-keys";
     private static Jedis redis;
 
     private RedisConnection() {
@@ -19,7 +20,9 @@ public class RedisConnection {
             if (redis == null) {
                 redis = new Jedis(ParasiteConfig.getConfig().getServerIp());
             }
-            redis.randomKey();
+
+            logger.info("Pushing Parasite-key: [" + ParasiteConfig.getConfig().getServerIp() + "]");
+            redis.sadd(PARASITE_SERVER_KEYS, ParasiteConfig.getConfig().getServerIp());
         } catch (Exception e) {
             logger.error("Error occurred while creating Redis connection.\n"
                     + ExceptionUtils.getStackTrace(e));
