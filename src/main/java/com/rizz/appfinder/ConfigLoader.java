@@ -16,12 +16,14 @@ public class ConfigLoader {
     private List<String> redisClusterIps;
 
     public static void loadConfig() {
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        try {
-            config = mapper.readValue(new File("src/main/resources/appFinderConfig.yaml"),
-                    ConfigLoader.class);
-        } catch (Exception e) {
-            logger.error(ExceptionUtils.getStackTrace(e));
+        if (config == null) {
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            try {
+                config = mapper.readValue(new File("src/main/resources/appFinderConfig.yaml"),
+                        ConfigLoader.class);
+            } catch (Exception e) {
+                logger.error(ExceptionUtils.getStackTrace(e));
+            }
         }
     }
 

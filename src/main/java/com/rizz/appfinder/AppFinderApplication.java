@@ -8,10 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AppFinderApplication {
 
     public static void main(String[] args) {
+        SpringApplication.run(AppFinderApplication.class, args);
         ConfigLoader.loadConfig();
         RedisConnection.createRedisConnection();
-        System.out.println("Redis keys: " + RedisConnection.getRedis().keys("*"));
-        SpringApplication.run(AppFinderApplication.class, args);
     }
 
 }
