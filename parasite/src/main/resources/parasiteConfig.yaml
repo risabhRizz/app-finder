@@ -1,4 +1,4 @@
-serverIp: 192.168.0.184
+serverIp: 127.0.0.1
 fetchPeriod: 5000
 redisClusterIps:
-  - 192.168.0.184
+  - 127.0.0.1

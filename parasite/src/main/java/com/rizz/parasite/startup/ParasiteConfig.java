@@ -2,11 +2,15 @@ package com.rizz.parasite.startup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.List;
 
 public class ParasiteConfig {
+    private static final Logger logger = LogManager.getLogger(ParasiteConfig.class);
     private static ParasiteConfig config;
     private String serverIp;
     private long fetchPeriod;
@@ -18,7 +22,7 @@ public class ParasiteConfig {
             config = mapper.readValue(new File("parasite/src/main/resources/parasiteConfig.yaml"),
                     ParasiteConfig.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
     }
 

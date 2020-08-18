@@ -2,7 +2,6 @@ package com.rizz.parasite.redis;
 
 import com.rizz.parasite.process.ProcessGatherer;
 import com.rizz.parasite.startup.ParasiteConfig;
-import com.rizz.parasite.util.ParasiteUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import redis.clients.jedis.Jedis;
