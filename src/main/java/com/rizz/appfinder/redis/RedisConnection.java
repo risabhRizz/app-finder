@@ -26,6 +26,7 @@ public class RedisConnection {
             return false;
         }
 
+        logger.info("Redis connection successful");
         return true;
     }
 
